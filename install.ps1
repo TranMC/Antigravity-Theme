@@ -145,7 +145,7 @@ else {
 
 if ($NeedsRepack) {
     Write-Step "Repacking app.asar / Dang dong goi lai app.asar..."
-    $NewAsar = "$Asar.pixel-new"
+    $NewAsar = Join-Path $Work 'app.asar.pixel-new'
     Pack-AsarArchive $Work $NewAsar
     Move-Item $NewAsar $Asar -Force
 }
