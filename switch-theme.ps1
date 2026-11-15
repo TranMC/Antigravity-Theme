@@ -63,7 +63,8 @@ http.get('http://127.0.0.1:$Port/json', (res) => {
 "@
         $TempJs = Join-Path $env:TEMP 'kanagawa_hot_reload.js'
         [System.IO.File]::WriteAllText($TempJs, $NodeScript, (New-Object System.Text.UTF8Encoding($false)))
-        $proc = Start-Process -FilePath 'node' -ArgumentList "`"$TempJs`"" -NoNewWindow -Wait -PassThru -ErrorAction SilentlyContinue
+        $jsExe = if (Get-Command 'node' -ErrorAction SilentlyContinue) { 'node' } elseif (Test-Path "$env:USERPROFILE\.bun\bin\bun.exe") { "$env:USERPROFILE\.bun\bin\bun.exe" } else { 'node' }
+        $proc = Start-Process -FilePath $jsExe -ArgumentList "`"$TempJs`"" -NoNewWindow -Wait -PassThru -ErrorAction SilentlyContinue
         if ($proc.ExitCode -eq 0) { $Reloaded = $true }
         Remove-Item $TempJs -Force -ErrorAction SilentlyContinue
     } catch {}

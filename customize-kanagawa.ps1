@@ -103,7 +103,15 @@ if ($DarkAqua)          { $nodeArgs += @("--dark-aqua", $DarkAqua) }
 if ($DarkSurface)       { $nodeArgs += @("--dark-surface", $DarkSurface) }
 if ($LightPrimary)      { $nodeArgs += @("--light-primary", $LightPrimary) }
 
-& node @nodeArgs
+if (Get-Command 'node' -ErrorAction SilentlyContinue) {
+    & node @nodeArgs
+} elseif (Test-Path "$env:USERPROFILE\.bun\bin\bun.exe") {
+    $env:BUN_TMPDIR = $env:TEMP
+    & "$env:USERPROFILE\.bun\bin\bun.exe" @nodeArgs
+} else {
+    Write-Host "[kanagawa] Node.js or Bun not found!" -ForegroundColor Red
+    exit 1
+}
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if (-not $NoReload) {

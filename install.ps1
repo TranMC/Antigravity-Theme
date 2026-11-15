@@ -37,10 +37,53 @@ if ($procs.Count -gt 0) {
     }
 }
 
+function Extract-AsarArchive($src, $dst) {
+    if (Get-Command 'npx' -ErrorAction SilentlyContinue) {
+        Write-Step "Extracting via npx @electron/asar..."
+        npx --yes @electron/asar extract $src $dst
+        if ($LASTEXITCODE -eq 0) { return }
+    }
+    $pyScript = Join-Path $PSScriptRoot 'scripts\asar.py'
+    if (Get-Command 'python' -ErrorAction SilentlyContinue) {
+        Write-Step "Extracting via Python asar tool..."
+        python $pyScript extract $src $dst
+        if ($LASTEXITCODE -eq 0) { return }
+    }
+    $bunPath = Join-Path $env:USERPROFILE '.bun\bin\bun.exe'
+    if (Test-Path $bunPath) {
+        Write-Step "Extracting via Bun @electron/asar..."
+        $env:BUN_TMPDIR = $env:TEMP
+        & $bunPath x @electron/asar extract $src $dst
+        if ($LASTEXITCODE -eq 0) { return }
+    }
+    Fail "Cannot extract asar (please ensure Python, Bun or Node.js is installed)."
+}
+
+function Pack-AsarArchive($src, $dst) {
+    if (Get-Command 'npx' -ErrorAction SilentlyContinue) {
+        Write-Step "Repacking via npx @electron/asar..."
+        npx --yes @electron/asar pack $src $dst
+        if ($LASTEXITCODE -eq 0) { return }
+    }
+    $pyScript = Join-Path $PSScriptRoot 'scripts\asar.py'
+    if (Get-Command 'python' -ErrorAction SilentlyContinue) {
+        Write-Step "Repacking via Python asar tool..."
+        python $pyScript pack $src $dst
+        if ($LASTEXITCODE -eq 0) { return }
+    }
+    $bunPath = Join-Path $env:USERPROFILE '.bun\bin\bun.exe'
+    if (Test-Path $bunPath) {
+        Write-Step "Repacking via Bun @electron/asar..."
+        $env:BUN_TMPDIR = $env:TEMP
+        & $bunPath x @electron/asar pack $src $dst
+        if ($LASTEXITCODE -eq 0) { return }
+    }
+    Fail "Cannot pack asar (please ensure Python, Bun or Node.js is installed)."
+}
+
 # --- 2. Extract and patch app.asar if needed ---
 Write-Step "Extracting app.asar / Dang giai nen app.asar..."
-npx --yes @electron/asar extract $Asar $Work
-if ($LASTEXITCODE -ne 0) { Fail "asar extract failed (is Node.js installed?) / Loi giai nen asar (kiem tra da cai Node.js chua)." }
+Extract-AsarArchive $Asar $Work
 
 $UtilsPath = Join-Path $Work 'dist\utils.js'
 if (-not (Test-Path $UtilsPath)) { Fail "dist/utils.js not found inside app.asar / Khong tim thay dist/utils.js." }
@@ -103,8 +146,7 @@ else {
 if ($NeedsRepack) {
     Write-Step "Repacking app.asar / Dang dong goi lai app.asar..."
     $NewAsar = "$Asar.pixel-new"
-    npx --yes @electron/asar pack $Work $NewAsar
-    if ($LASTEXITCODE -ne 0 -or -not (Test-Path $NewAsar)) { Fail "asar pack failed - app.asar was NOT modified." }
+    Pack-AsarArchive $Work $NewAsar
     Move-Item $NewAsar $Asar -Force
 }
 

@@ -3084,6 +3084,95 @@ const GLASS_QUALITY_JS = `(() => {
   return 'installed';
 })()`;
 
+const CYBER_CAT_PET_JS = `(() => {
+  if (document.getElementById('antigravity-cyber-cat')) return 'already-present';
+  const pet = document.createElement('div');
+  pet.id = 'antigravity-cyber-cat';
+  pet.innerHTML = \`
+    <div class="cat-wrapper" style="position:fixed;bottom:100px;right:25px;width:72px;height:72px;z-index:999999;cursor:grab;user-select:none;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.45));transition:transform 0.15s ease;">
+      <svg viewBox="0 0 100 100" width="72" height="72">
+        <defs>
+          <linearGradient id="catGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4C1D95" />
+            <stop offset="50%" stop-color="#2563EB" />
+            <stop offset="100%" stop-color="#06B6D4" />
+          </linearGradient>
+          <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+        <polygon points="20,40 10,12 40,26" fill="url(#catGrad)" stroke="#7AA89F" stroke-width="2" />
+        <polygon points="80,40 90,12 60,26" fill="url(#catGrad)" stroke="#7AA89F" stroke-width="2" />
+        <polygon points="22,35 15,18 36,26" fill="#F472B6" opacity="0.85" />
+        <polygon points="78,35 85,18 64,26" fill="#F472B6" opacity="0.85" />
+        <circle cx="50" cy="54" r="38" fill="url(#catGrad)" stroke="#E6C384" stroke-width="2" />
+        <circle cx="28" cy="62" r="7" fill="#F472B6" opacity="0.45" />
+        <circle cx="72" cy="62" r="7" fill="#F472B6" opacity="0.45" />
+        <g id="catEyes">
+          <circle cx="36" cy="50" r="7" fill="#06B6D4" filter="url(#neonGlow)" />
+          <circle cx="38" cy="48" r="2.5" fill="#FFFFFF" />
+          <circle cx="64" cy="50" r="7" fill="#06B6D4" filter="url(#neonGlow)" />
+          <circle cx="66" cy="48" r="2.5" fill="#FFFFFF" />
+        </g>
+        <polygon points="50,58 47,55 53,55" fill="#F472B6" />
+        <path d="M44,63 Q50,68 50,61 Q50,68 56,63" fill="none" stroke="#EAE6D3" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <div id="catBubble" style="display:none;position:absolute;bottom:80px;right:-10px;background:rgba(18,24,35,0.92);border:1px solid rgba(122,168,159,0.5);border-radius:10px;padding:6px 12px;font-size:12px;color:#EAE6D3;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,0.5);pointer-events:none;">
+        Meow! Kanagawa Theme Ready ✨
+      </div>
+    </div>
+  \`;
+  document.body.appendChild(pet);
+
+  const wrapper = pet.querySelector('.cat-wrapper');
+  const bubble = pet.querySelector('#catBubble');
+  let isDragging = false;
+  let startX = 0, startY = 0;
+  let posX = parseInt(localStorage.getItem('antigravity_cat_x') || '-1');
+  let posY = parseInt(localStorage.getItem('antigravity_cat_y') || '-1');
+
+  if (posX >= 0 && posY >= 0) {
+    wrapper.style.right = 'auto';
+    wrapper.style.bottom = 'auto';
+    wrapper.style.left = posX + 'px';
+    wrapper.style.top = posY + 'px';
+  }
+
+  wrapper.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.clientX - wrapper.getBoundingClientRect().left;
+    startY = e.clientY - wrapper.getBoundingClientRect().top;
+    wrapper.style.cursor = 'grabbing';
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const x = Math.max(10, Math.min(window.innerWidth - 85, e.clientX - startX));
+    const y = Math.max(10, Math.min(window.innerHeight - 85, e.clientY - startY));
+    wrapper.style.right = 'auto';
+    wrapper.style.bottom = 'auto';
+    wrapper.style.left = x + 'px';
+    wrapper.style.top = y + 'px';
+    localStorage.setItem('antigravity_cat_x', x);
+    localStorage.setItem('antigravity_cat_y', y);
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (isDragging) {
+      isDragging = false;
+      wrapper.style.cursor = 'grab';
+    }
+  });
+
+  wrapper.addEventListener('click', () => {
+    bubble.style.display = 'block';
+    setTimeout(() => { bubble.style.display = 'none'; }, 2500);
+  });
+
+  return 'installed';
+})()`;
+
 /**
  * Injects the pixel theme stylesheet into a window's web contents.
  * Re-injects on every dom-ready so in-app navigations stay themed.
@@ -3233,6 +3322,8 @@ function attachPixelTheme(win) {
                     })
                     .catch((e) => console.error("[pixel-theme] glass widgets failed:", e));
             }
+            // Screen Pet (Cyber-Cat)
+            wc.executeJavaScript(CYBER_CAT_PET_JS, true).catch(() => {});
         });
         syncTitleBarOverlay(win);
 
