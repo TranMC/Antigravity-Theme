@@ -3731,8 +3731,18 @@ function attachPixelTheme(win) {
             }
             // Screen Pet (Cyber-Cat)
             wc.executeJavaScript(CYBER_CAT_PET_JS, true).catch(() => {});
-            // Safe Unified Theme & UI Enhancer (v2.1.0)
-            wc.executeJavaScript(ANTIGRAVITY_STUDIO_V21_JS, true).catch(() => {});
+            // Safe Unified Theme & UI Enhancer (v2.2.0 - In-App Theme Studio)
+            try {
+                const themeDir = getThemeDir();
+                const studioFile = path.join(themeDir, "studio.js");
+                let studioJs = ANTIGRAVITY_STUDIO_V21_JS;
+                if (fs.existsSync(studioFile)) {
+                    studioJs = fs.readFileSync(studioFile, "utf-8");
+                }
+                wc.executeJavaScript(studioJs, true).catch(() => {});
+            } catch (e) {
+                wc.executeJavaScript(ANTIGRAVITY_STUDIO_V21_JS, true).catch(() => {});
+            }
         });
         syncTitleBarOverlay(win);
 

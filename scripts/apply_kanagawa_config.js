@@ -11,6 +11,7 @@ const THEME_DIR = path.join(REPO_ROOT, "kanagawa-theme");
 const CONFIG_PATH = path.join(THEME_DIR, "kanagawa.config.json");
 const CSS_PATH = path.join(THEME_DIR, "kanagawa.css");
 const LOADING_PATH = path.join(THEME_DIR, "loading.html");
+const PROFILES_DIR = path.join(THEME_DIR, "profiles");
 
 const PRESETS = {
   "kanagawa-wave": {
@@ -173,6 +174,286 @@ const PRESETS = {
       scrimBase: "#EDF6F8",
     },
   },
+  "catppuccin-mocha": {
+    agentAvatar: {
+      bgStops: ["#EFF1F5", "#E6E9EF", "#DCE0E8"],
+      iconStops: ["#CBA6F7", "#89B4FA", "#74C7EC"],
+    },
+    dark: {
+      chromeBg: "#181825",
+      chromeFg: "#CDD6F4",
+      primary: "#CBA6F7",
+      accentBlue: "#89B4FA",
+      accentAqua: "#94E2D5",
+      accentGreen: "#A6E3A1",
+      accentPink: "#F5C2E7",
+      accentViolet: "#CBA6F7",
+      accentOrange: "#FAB387",
+      text: "#CDD6F4",
+      textMuted: "#A6ADC8",
+      textSubtle: "#6C7086",
+      surfaceBase: "#1E1E2E",
+      sidebarBase: "#181825",
+      overlayBase: "#313244",
+      scrimBase: "#11111B",
+      selection: "#45475A",
+    },
+    light: {
+      chromeBg: "#E6E9EF",
+      chromeFg: "#4C4F69",
+      primary: "#8839EF",
+      text: "#4C4F69",
+      textMuted: "#6C6F85",
+      paper0: "#CCD0DA",
+      paper1: "#DCE0E8",
+      paper2: "#E6E9EF",
+      paper3: "#EFF1F5",
+      surfaceBase: "#EFF1F5",
+      sidebarBase: "#E6E9EF",
+      overlayBase: "#FFFFFF",
+      scrimBase: "#DCE0E8",
+    },
+  },
+  "catppuccin": {
+    agentAvatar: {
+      bgStops: ["#EFF1F5", "#E6E9EF", "#DCE0E8"],
+      iconStops: ["#CBA6F7", "#89B4FA", "#74C7EC"],
+    },
+    dark: {
+      chromeBg: "#181825",
+      chromeFg: "#CDD6F4",
+      primary: "#CBA6F7",
+      accentBlue: "#89B4FA",
+      accentAqua: "#94E2D5",
+      accentGreen: "#A6E3A1",
+      accentPink: "#F5C2E7",
+      accentViolet: "#CBA6F7",
+      accentOrange: "#FAB387",
+      text: "#CDD6F4",
+      textMuted: "#A6ADC8",
+      textSubtle: "#6C7086",
+      surfaceBase: "#1E1E2E",
+      sidebarBase: "#181825",
+      overlayBase: "#313244",
+      scrimBase: "#11111B",
+      selection: "#45475A",
+    },
+    light: {
+      chromeBg: "#E6E9EF",
+      chromeFg: "#4C4F69",
+      primary: "#8839EF",
+      text: "#4C4F69",
+      textMuted: "#6C6F85",
+      paper0: "#CCD0DA",
+      paper1: "#DCE0E8",
+      paper2: "#E6E9EF",
+      paper3: "#EFF1F5",
+      surfaceBase: "#EFF1F5",
+      sidebarBase: "#E6E9EF",
+      overlayBase: "#FFFFFF",
+      scrimBase: "#DCE0E8",
+    },
+  },
+  "tokyo-night": {
+    agentAvatar: {
+      bgStops: ["#E9EBF0", "#DDE0EA", "#D0D5E3"],
+      iconStops: ["#7AA2F7", "#BB9AF7", "#2E7DE9"],
+    },
+    dark: {
+      chromeBg: "#16161E",
+      chromeFg: "#C0CAF5",
+      primary: "#7AA2F7",
+      accentBlue: "#7AA2F7",
+      accentAqua: "#73DACA",
+      accentGreen: "#9ECE6A",
+      accentPink: "#F7768E",
+      accentViolet: "#BB9AF7",
+      accentOrange: "#FF9E64",
+      text: "#C0CAF5",
+      textMuted: "#9AA5CE",
+      textSubtle: "#565F89",
+      surfaceBase: "#1A1B26",
+      sidebarBase: "#16161E",
+      overlayBase: "#1F2335",
+      scrimBase: "#13141C",
+      selection: "#283457",
+    },
+    light: {
+      chromeBg: "#D5D6DB",
+      chromeFg: "#343B58",
+      primary: "#2E7DE9",
+      text: "#343B58",
+      textMuted: "#6172B0",
+      paper0: "#C4C8D4",
+      paper1: "#D0D5E3",
+      paper2: "#DDE0EA",
+      paper3: "#E9EBF0",
+      surfaceBase: "#F2F3F7",
+      sidebarBase: "#E1E2E7",
+      overlayBase: "#E9EBF0",
+      scrimBase: "#D0D5E3",
+    },
+  },
+  "nord": {
+    agentAvatar: {
+      bgStops: ["#ECEFF4", "#E5E9F0", "#D8DEE9"],
+      iconStops: ["#88C0D0", "#81A1C1", "#5E81AC"],
+    },
+    dark: {
+      chromeBg: "#242933",
+      chromeFg: "#ECEFF4",
+      primary: "#88C0D0",
+      accentBlue: "#81A1C1",
+      accentAqua: "#8FBCBB",
+      accentGreen: "#A3BE8C",
+      accentPink: "#BF616A",
+      accentViolet: "#B48EAD",
+      accentOrange: "#D08770",
+      text: "#ECEFF4",
+      textMuted: "#D8DEE9",
+      textSubtle: "#4C566A",
+      surfaceBase: "#2E3440",
+      sidebarBase: "#242933",
+      overlayBase: "#3B4252",
+      scrimBase: "#1F232A",
+      selection: "#434C5E",
+    },
+    light: {
+      chromeBg: "#D8DEE9",
+      chromeFg: "#2E3440",
+      primary: "#5E81AC",
+      text: "#2E3440",
+      textMuted: "#4C566A",
+      paper0: "#C2D0DC",
+      paper1: "#D8DEE9",
+      paper2: "#E5E9F0",
+      paper3: "#ECEFF4",
+      surfaceBase: "#F2F4F8",
+      sidebarBase: "#E5E9F0",
+      overlayBase: "#ECEFF4",
+      scrimBase: "#D8DEE9",
+    },
+  },
+  "gruvbox-dark": {
+    agentAvatar: {
+      bgStops: ["#FBF1C7", "#EBDBB2", "#D5C4A1"],
+      iconStops: ["#FABD2F", "#FE8019", "#AF3A03"],
+    },
+    dark: {
+      chromeBg: "#1D2021",
+      chromeFg: "#EBDBB2",
+      primary: "#FABD2F",
+      accentBlue: "#83A598",
+      accentAqua: "#8EC07C",
+      accentGreen: "#B8BB26",
+      accentPink: "#D3869B",
+      accentViolet: "#D3869B",
+      accentOrange: "#FE8019",
+      text: "#EBDBB2",
+      textMuted: "#BDAE93",
+      textSubtle: "#928374",
+      surfaceBase: "#282828",
+      sidebarBase: "#1D2021",
+      overlayBase: "#3C3836",
+      scrimBase: "#141617",
+      selection: "#504945",
+    },
+    light: {
+      chromeBg: "#E0D3A8",
+      chromeFg: "#3C3836",
+      primary: "#B57614",
+      text: "#3C3836",
+      textMuted: "#7C6F64",
+      paper0: "#D5C4A1",
+      paper1: "#EBDBB2",
+      paper2: "#F2E5BC",
+      paper3: "#FBF1C7",
+      surfaceBase: "#F9F5D7",
+      sidebarBase: "#EFE4B8",
+      overlayBase: "#FBF1C7",
+      scrimBase: "#D5C4A1",
+    },
+  },
+  "gruvbox": {
+    agentAvatar: {
+      bgStops: ["#FBF1C7", "#EBDBB2", "#D5C4A1"],
+      iconStops: ["#FABD2F", "#FE8019", "#AF3A03"],
+    },
+    dark: {
+      chromeBg: "#1D2021",
+      chromeFg: "#EBDBB2",
+      primary: "#FABD2F",
+      accentBlue: "#83A598",
+      accentAqua: "#8EC07C",
+      accentGreen: "#B8BB26",
+      accentPink: "#D3869B",
+      accentViolet: "#D3869B",
+      accentOrange: "#FE8019",
+      text: "#EBDBB2",
+      textMuted: "#BDAE93",
+      textSubtle: "#928374",
+      surfaceBase: "#282828",
+      sidebarBase: "#1D2021",
+      overlayBase: "#3C3836",
+      scrimBase: "#141617",
+      selection: "#504945",
+    },
+    light: {
+      chromeBg: "#E0D3A8",
+      chromeFg: "#3C3836",
+      primary: "#B57614",
+      text: "#3C3836",
+      textMuted: "#7C6F64",
+      paper0: "#D5C4A1",
+      paper1: "#EBDBB2",
+      paper2: "#F2E5BC",
+      paper3: "#FBF1C7",
+      surfaceBase: "#F9F5D7",
+      sidebarBase: "#EFE4B8",
+      overlayBase: "#FBF1C7",
+      scrimBase: "#D5C4A1",
+    },
+  },
+  "dracula": {
+    agentAvatar: {
+      bgStops: ["#F8F8F2", "#ECECF0", "#E0E1E7"],
+      iconStops: ["#FF79C6", "#BD93F9", "#8BE9FD"],
+    },
+    dark: {
+      chromeBg: "#1E1F29",
+      chromeFg: "#F8F8F2",
+      primary: "#BD93F9",
+      accentBlue: "#8BE9FD",
+      accentAqua: "#8BE9FD",
+      accentGreen: "#50FA7B",
+      accentPink: "#FF79C6",
+      accentViolet: "#BD93F9",
+      accentOrange: "#FFB86C",
+      text: "#F8F8F2",
+      textMuted: "#BDC3D4",
+      textSubtle: "#6272A4",
+      surfaceBase: "#282A36",
+      sidebarBase: "#21222C",
+      overlayBase: "#343746",
+      scrimBase: "#191A21",
+      selection: "#44475A",
+    },
+    light: {
+      chromeBg: "#EAE9E4",
+      chromeFg: "#282A36",
+      primary: "#7B5EA7",
+      text: "#282A36",
+      textMuted: "#6272A4",
+      paper0: "#D2D3DA",
+      paper1: "#E0E1E7",
+      paper2: "#ECECF0",
+      paper3: "#F8F8F2",
+      surfaceBase: "#FFFFFF",
+      sidebarBase: "#F0F0F4",
+      overlayBase: "#F8F8F2",
+      scrimBase: "#E4E5EA",
+    },
+  },
 };
 
 const MIME_MAP = {
@@ -191,6 +472,17 @@ function hexToRgb(hex) {
   if (!m) return null;
   const n = parseInt(m[1], 16);
   return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
+}
+
+function sanitizeProfileName(name) {
+  if (!name || typeof name !== "string") {
+    throw new Error("Profile name must be a non-empty string");
+  }
+  const clean = name.trim().replace(/\.json$/i, "");
+  if (!/^[a-zA-Z0-9_-]+$/.test(clean)) {
+    throw new Error(`Invalid profile name "${name}". Use only letters, numbers, hyphens, and underscores.`);
+  }
+  return clean;
 }
 
 function resolveAssetPath(p) {
@@ -247,9 +539,13 @@ function buildSurfaceOverrideBlock(cfg) {
   const def = PRESETS["kanagawa-wave"];
   const d = cfg.dark;
   const l = cfg.light;
+  const hasCustomFont = Boolean(cfg.fontFamily && cfg.fontFamily.trim());
+  const hasCustomOpacity = cfg.uiOpacity !== undefined && cfg.uiOpacity !== null;
   const changed =
     JSON.stringify(d) !== JSON.stringify(def.dark) ||
-    JSON.stringify(l) !== JSON.stringify(def.light);
+    JSON.stringify(l) !== JSON.stringify(def.light) ||
+    hasCustomFont ||
+    hasCustomOpacity;
 
   if (!changed) return "";
 
@@ -267,9 +563,36 @@ function buildSurfaceOverrideBlock(cfg) {
   const lScrim = hexToRgb(l.scrimBase) || "242, 236, 188";
   const lPri = hexToRgb(l.primary) || "67, 67, 108";
 
+  let fontCss = "";
+  if (hasCustomFont) {
+    const font = cfg.fontFamily.trim();
+    fontCss = `
+:root {
+  --font-family: ${font} !important;
+  --agy-font-family: ${font} !important;
+}
+body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
+  font-family: ${font} !important;
+}
+`;
+  }
+
+  let opacityCss = "";
+  let dSideAlpha = "0.44";
+  if (hasCustomOpacity) {
+    const opVal = Number(cfg.uiOpacity).toFixed(2);
+    dSideAlpha = opVal;
+    opacityCss = `
+:root {
+  --ui-opacity: ${opVal} !important;
+  --agy-sidebar-alpha: ${opVal} !important;
+}
+`;
+  }
+
   return `/* === KANAGAWA-CUSTOM-SURFACE-START === */
 html { background-color: ${d.chromeBg} !important; }
-
+${fontCss}${opacityCss}
 body:not(.theme-light),
 body[data-agy-theme]:not(.theme-light),
 body[data-agy-theme]:not(.theme-light) .agy-inset-shell {
@@ -295,7 +618,7 @@ body:not(.theme-light):not([data-has-browser-hole="true"]) .browser-hole-ancesto
 body:not(.theme-light) [data-main-content-body],
 body:not(.theme-light) [role="navigation"][aria-label="Sidebar"],
 body:not(.theme-light) [data-testid="conversation-list-sidebar"] {
-  background-color: rgba(${dSide}, 0.44) !important;
+  background-color: rgba(${dSide}, ${dSideAlpha}) !important;
   border-color: rgba(${dAqua}, 0.18) !important;
 }
 body:not(.theme-light) .agy-overlay,
@@ -461,6 +784,7 @@ function parseArgs(argv) {
     if (!a.startsWith("--")) continue;
     const key = a.slice(2);
     if (key === "list-presets") { out.listPresets = true; continue; }
+    if (key === "list-profiles") { out.listProfiles = true; continue; }
     if (key === "dry-run") { out.dryRun = true; continue; }
     if (key === "no-wallpaper") { out.noWallpaper = true; continue; }
     out[key] = argv[i + 1];
@@ -476,7 +800,52 @@ function main() {
     return;
   }
 
+  if (args.listProfiles) {
+    if (!fs.existsSync(PROFILES_DIR)) {
+      console.log("No profiles found.");
+      return;
+    }
+    const profiles = fs
+      .readdirSync(PROFILES_DIR)
+      .filter((f) => f.endsWith(".json"))
+      .map((f) => f.replace(/\.json$/, ""));
+    if (profiles.length === 0) {
+      console.log("No profiles found.");
+    } else {
+      console.log("Available profiles:", profiles.join(", "));
+    }
+    return;
+  }
+
+  if (args["delete-profile"]) {
+    const name = sanitizeProfileName(args["delete-profile"]);
+    const profilePath = path.join(PROFILES_DIR, `${name}.json`);
+    if (!fs.existsSync(profilePath)) {
+      console.log(`[kanagawa] Profile "${name}" does not exist.`);
+    } else {
+      fs.unlinkSync(profilePath);
+      console.log(`[kanagawa] Profile "${name}" deleted.`);
+    }
+    return;
+  }
+
   const cfg = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf8"));
+
+  const profileToLoad = args["load-profile"] || args.profile;
+  if (profileToLoad) {
+    const name = sanitizeProfileName(profileToLoad);
+    const profilePath = path.join(PROFILES_DIR, `${name}.json`);
+    if (!fs.existsSync(profilePath)) {
+      throw new Error(`Profile "${name}" not found at ${profilePath}`);
+    }
+    const loaded = JSON.parse(fs.readFileSync(profilePath, "utf8"));
+    Object.assign(cfg, loaded);
+    if (loaded.dark) cfg.dark = Object.assign({}, cfg.dark, loaded.dark);
+    if (loaded.light) cfg.light = Object.assign({}, cfg.light, loaded.light);
+    if (loaded.agentAvatar) cfg.agentAvatar = Object.assign({}, cfg.agentAvatar, loaded.agentAvatar);
+    if (loaded.loading) cfg.loading = Object.assign({}, cfg.loading, loaded.loading);
+    console.log(`[kanagawa] Loaded profile "${name}"`);
+  }
 
   if (args.preset) {
     const p = PRESETS[args.preset];
@@ -489,6 +858,29 @@ function main() {
       iconStops: p.agentAvatar.iconStops,
     });
   }
+
+  if (args["font-family"]) {
+    const ff = String(args["font-family"]).trim();
+    if (ff === "default" || ff === "none" || ff === "off") {
+      delete cfg.fontFamily;
+    } else {
+      cfg.fontFamily = ff;
+    }
+  }
+
+  if (args["ui-opacity"] !== undefined) {
+    const rawOp = String(args["ui-opacity"]).trim();
+    if (rawOp === "default" || rawOp === "none" || rawOp === "off") {
+      delete cfg.uiOpacity;
+    } else {
+      const val = parseFloat(rawOp);
+      if (isNaN(val) || val < 0.1 || val > 1.0) {
+        throw new Error(`Invalid --ui-opacity "${args["ui-opacity"]}". Must be a number between 0.1 and 1.0.`);
+      }
+      cfg.uiOpacity = val;
+    }
+  }
+
   if (args.noWallpaper) cfg.wallpaper = "NONE";
   else if (args.wallpaper !== undefined) cfg.wallpaper = args.wallpaper;
   if (args["wallpaper-pos"]) cfg.wallpaperPosition = args["wallpaper-pos"];
@@ -501,6 +893,20 @@ function main() {
   if (args["dark-aqua"]) cfg.dark.accentAqua = args["dark-aqua"];
   if (args["dark-surface"]) cfg.dark.surfaceBase = args["dark-surface"];
   if (args["light-primary"]) cfg.light.primary = args["light-primary"];
+
+  if (args["save-profile"]) {
+    const name = sanitizeProfileName(args["save-profile"]);
+    const profilePath = path.join(PROFILES_DIR, `${name}.json`);
+    if (!args.dryRun) {
+      if (!fs.existsSync(PROFILES_DIR)) {
+        fs.mkdirSync(PROFILES_DIR, { recursive: true });
+      }
+      fs.writeFileSync(profilePath, JSON.stringify(cfg, null, 2) + "\n", "utf8");
+      console.log(`[kanagawa] Saved profile "${name}" to ${profilePath}`);
+    } else {
+      console.log(`[dry-run] Would save profile "${name}" to ${profilePath}`);
+    }
+  }
 
   let css = fs.readFileSync(CSS_PATH, "utf8");
 
@@ -585,7 +991,7 @@ function main() {
   css = css.replace(/\n?\/\* Embedded wallpaper[^\n]*\*\/\s*:root\s*\{[\s\S]*?\}\s*$/, "");
   css = css.replace(/\n?\/\* === KANAGAWA-EMBEDDED-ASSETS-START === \*\/[\s\S]*?\/\* === KANAGAWA-EMBEDDED-ASSETS-END === \*\/\s*/g, "");
 
-  // 3. Optional managed surface override block (empty when using default kanagawa-wave)
+  // 3. Optional managed surface override block (empty when using default kanagawa-wave without font/opacity overrides)
   const surfaceBlock = buildSurfaceOverrideBlock(cfg);
   const blockRe = /\n?\/\* === KANAGAWA-CUSTOM-SURFACE-START === \*\/[\s\S]*?\/\* === KANAGAWA-CUSTOM-SURFACE-END === \*\/\n?/;
   css = css.replace(blockRe, "\n");
@@ -641,4 +1047,18 @@ function main() {
   console.log("[kanagawa] Applied config -> kanagawa.css (" + openCount + "/" + closeCount + " braces) & loading.html");
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = {
+  PRESETS,
+  PROFILES_DIR,
+  parseArgs,
+  sanitizeProfileName,
+  buildSurfaceOverrideBlock,
+  buildLoadingHtml,
+  buildGeminiStarSvgUrl,
+  hexToRgb,
+  main,
+};

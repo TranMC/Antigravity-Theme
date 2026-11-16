@@ -48,10 +48,30 @@ This file instructs AI coding assistants (Antigravity, Claude Code, Codex, Curso
   ```powershell
   node scripts/apply_kanagawa_config.js --list-presets
   ```
-  *(Preset có sẵn: `kanagawa-wave`, `kanagawa-dragon`, `sakura-dusk`, `midnight-aqua`)*
+  *(Preset có sẵn: `kanagawa-wave`, `kanagawa-dragon`, `sakura-dusk`, `midnight-aqua`, `catppuccin-mocha`, `tokyo-night`, `nord`, `gruvbox-dark`, `dracula`)*
 - **Đổi preset màu:**
   ```powershell
-  .\customize-kanagawa.ps1 -Preset sakura-dusk
+  .\customize-kanagawa.ps1 -Preset tokyo-night
+  ```
+- **Menu tương tác chọn nhanh số 1-9:**
+  ```powershell
+  .\customize-kanagawa.ps1 -Menu
+  ```
+  *(Chỉ cần nhập số từ `1` đến `9` để đổi ngay lập tức preset màu tương ứng).*
+- **Quản lý Profile:**
+  ```powershell
+  # Lưu cấu hình hiện tại thành profile:
+  .\customize-kanagawa.ps1 -SaveProfile "ten-profile"
+
+  # Nạp lại profile:
+  .\customize-kanagawa.ps1 -Profile "ten-profile"
+
+  # Liệt kê profile:
+  .\customize-kanagawa.ps1 -ListProfiles
+  ```
+- **Tùy biến Font & Độ mờ Glassmorphism:**
+  ```powershell
+  .\customize-kanagawa.ps1 -FontFamily "JetBrains Mono" -UiOpacity 0.85
   ```
 - **Đổi hình nền & vị trí canh ảnh:**
   ```powershell
@@ -77,6 +97,11 @@ This file instructs AI coding assistants (Antigravity, Claude Code, Codex, Curso
 - **Chỉnh toàn bộ bảng màu / chữ màn hình loading:** Sửa trực tiếp `kanagawa-theme/kanagawa.config.json` (`dark.*`, `light.*`, `agentAvatar.bgStops`, `agentAvatar.iconStops`, `loading.title`, `loading.subtitle`), sau đó chạy:
   ```powershell
   .\customize-kanagawa.ps1
+  ```
+- **Chạy kiểm thử tự động (Unit Test suite):**
+  ```powershell
+  npm test
+  # hoặc: bun test
   ```
 
 #### C. Lưu ý tính di động (Portability) của `kanagawa.config.json`
