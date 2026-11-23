@@ -9,6 +9,7 @@ const SCRIPT_PATH = path.join(REPO_ROOT, "scripts", "apply_kanagawa_config.js");
 const THEME_DIR = path.join(REPO_ROOT, "kanagawa-theme");
 const CONFIG_PATH = path.join(THEME_DIR, "kanagawa.config.json");
 const CSS_PATH = path.join(THEME_DIR, "kanagawa.css");
+const LOADING_PATH = path.join(THEME_DIR, "loading.html");
 const PROFILES_DIR = path.join(THEME_DIR, "profiles");
 
 const {
@@ -110,16 +111,16 @@ describe("Antigravity Kanagawa Theme - CI & Automation Tests", () => {
   });
 
   describe("Font & UI Opacity Injection", () => {
-    it("should inject custom font-family into surface override CSS", () => {
+    it("should inject custom font-family with native Antigravity fallback stack into surface override CSS", () => {
       const fakeCfg = {
         fontFamily: "Fira Code, monospace",
         dark: PRESETS["kanagawa-wave"].dark,
         light: PRESETS["kanagawa-wave"].light,
       };
       const css = buildSurfaceOverrideBlock(fakeCfg);
-      assert.ok(css.includes("--font-family: Fira Code, monospace !important;"));
-      assert.ok(css.includes("font-family: Fira Code, monospace !important;"));
-      assert.ok(css.includes(".monaco-workbench"));
+      assert.ok(css.includes('--font-family: Fira Code, monospace, "Inter", "Google Sans"'));
+      assert.ok(css.includes('font-family: Fira Code, monospace, "Inter", "Google Sans"'));
+      assert.ok(css.includes("sans-serif !important;"));
     });
 
     it("should inject custom ui-opacity into surface override CSS", () => {
@@ -165,8 +166,14 @@ describe("Antigravity Kanagawa Theme - CI & Automation Tests", () => {
   describe("Profiles Manager: Save, Load, List, Delete", () => {
     const testProfileName = "__citest_temp_profile__";
     const testProfilePath = path.join(PROFILES_DIR, `${testProfileName}.json`);
+    let origConfig = null;
+    let origCss = null;
+    let origLoading = null;
 
     before(() => {
+      origConfig = fs.readFileSync(CONFIG_PATH, "utf8");
+      origCss = fs.readFileSync(CSS_PATH, "utf8");
+      origLoading = fs.existsSync(LOADING_PATH) ? fs.readFileSync(LOADING_PATH, "utf8") : null;
       if (fs.existsSync(testProfilePath)) {
         fs.unlinkSync(testProfilePath);
       }
@@ -176,6 +183,9 @@ describe("Antigravity Kanagawa Theme - CI & Automation Tests", () => {
       if (fs.existsSync(testProfilePath)) {
         fs.unlinkSync(testProfilePath);
       }
+      if (origConfig !== null) fs.writeFileSync(CONFIG_PATH, origConfig, "utf8");
+      if (origCss !== null) fs.writeFileSync(CSS_PATH, origCss, "utf8");
+      if (origLoading !== null) fs.writeFileSync(LOADING_PATH, origLoading, "utf8");
     });
 
     it("should sanitize profile names correctly", () => {
@@ -262,6 +272,35 @@ describe("Antigravity Kanagawa Theme - CI & Automation Tests", () => {
 
       assert.strictEqual(configBefore, configAfter, "Config file must not change during dry-run");
       assert.strictEqual(cssBefore, cssAfter, "CSS file must not change during dry-run");
+    });
+  });
+
+  describe("Batch & PowerShell Scripts Validation", () => {
+    it("should properly escape '&' as '^&' in echo lines of .bat scripts to prevent 'not recognized as command' errors", () => {
+      const batFiles = ["install.bat", "uninstall.bat", "customize-kanagawa.bat", "switch-theme.bat"];
+      for (const file of batFiles) {
+        const fullPath = path.join(REPO_ROOT, file);
+        assert.ok(fs.existsSync(fullPath), `${file} should exist`);
+        const lines = fs.readFileSync(fullPath, "utf8").split(/\r?\n/);
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (/^echo\s+/i.test(line)) {
+            const unescapedAmpersand = /(^|[^^])&/.test(line);
+            assert.strictEqual(
+              unescapedAmpersand,
+              false,
+              `${file}:${i + 1} has unescaped '&' in echo statement: "${line}"`
+            );
+          }
+        }
+      }
+    });
+
+    it("should support Antigravity v44.9.1+ (loadHubWindowUrl) and legacy (win.loadURL) anchors in install.ps1", () => {
+      const installPs1 = fs.readFileSync(path.join(REPO_ROOT, "install.ps1"), "utf8");
+      assert.ok(installPs1.includes("loadHubWindowUrl"), "install.ps1 must support loadHubWindowUrl for v44.9.1+");
+      assert.ok(installPs1.includes("void win.loadURL(url);"), "install.ps1 must retain backward compatibility for win.loadURL");
+      assert.ok(installPs1.includes("!(0, utils_1.isMacOS)()"), "install.ps1 must support v44.9.1+ ipcHandlers anchor");
     });
   });
 });

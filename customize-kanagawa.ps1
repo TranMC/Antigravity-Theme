@@ -64,7 +64,7 @@ if ($PickAgentAvatar) {
 if ($Menu) {
     Write-Host ""
     Write-Host "============================================================" -ForegroundColor Cyan
-    Write-Host "   Antigravity Theme Customizer v2.2.0 (Menu nhanh)" -ForegroundColor Cyan
+    Write-Host "   Antigravity Theme Customizer v2.3.0 (Menu nhanh)" -ForegroundColor Cyan
     Write-Host "============================================================" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "--- CHON PRESET MAU (Nhan 1-9 la doi ngay) ---" -ForegroundColor Yellow
@@ -246,6 +246,7 @@ if ($DarkAqua)          { $nodeArgs += @("--dark-aqua", $DarkAqua) }
 if ($DarkSurface)       { $nodeArgs += @("--dark-surface", $DarkSurface) }
 if ($LightPrimary)      { $nodeArgs += @("--light-primary", $LightPrimary) }
 
+$pwNode = Get-ChildItem -Path "$env:LOCALAPPDATA\Programs\Python\Python*\Lib\site-packages\playwright\driver\node.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
 if (Get-Command 'node' -ErrorAction SilentlyContinue) {
     & node @nodeArgs
 } elseif (Get-Command 'bun' -ErrorAction SilentlyContinue) {
@@ -254,8 +255,8 @@ if (Get-Command 'node' -ErrorAction SilentlyContinue) {
 } elseif (Test-Path "$env:USERPROFILE\.bun\bin\bun.exe") {
     $env:BUN_TMPDIR = $env:TEMP
     & "$env:USERPROFILE\.bun\bin\bun.exe" @nodeArgs
-} elseif (Test-Path "C:\Users\TranMC\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\driver\node.exe") {
-    & "C:\Users\TranMC\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\driver\node.exe" @nodeArgs
+} elseif ($pwNode) {
+    & $pwNode.FullName @nodeArgs
 } else {
     Write-Host "[kanagawa] Node.js or Bun not found!" -ForegroundColor Red
     exit 1
@@ -264,4 +265,9 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if (-not $NoReload) {
     & $SwitchScript kanagawa
+}
+
+if ($Menu) {
+    Write-Host ""
+    Read-Host "Done! Press Enter to close / Hoan tat! Nhan Enter de dong" | Out-Null
 }

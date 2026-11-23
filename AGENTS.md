@@ -11,7 +11,7 @@ This file instructs AI coding assistants (Antigravity, Claude Code, Codex, Curso
 
 ### 1. Kiến trúc & Vai trò từng file
 
-- `install.ps1` / `install.bat`: Giải nén `%LOCALAPPDATA%\Programs\Antigravity\resources\app.asar`, backup thành `app.asar.pixel-backup`, patch `dist/utils.js` & `dist/ipcHandlers.js`, chèn `patch/pixelTheme.js`, đóng gói lại `app.asar`, rồi copy `kanagawa-theme/` sang `resources\kanagawa-theme\` và ghi `resources\active-theme.json`.
+- `install.ps1` / `install.bat`: Giải nén `%LOCALAPPDATA%\Programs\Antigravity\resources\app.asar`, backup thành `app.asar.pixel-backup`, patch `dist/utils.js` (hỗ trợ cả Antigravity v44.9.1+ với `loadHubWindowUrl` lẫn các bản cũ với `win.loadURL`) & `dist/ipcHandlers.js`, chèn `patch/pixelTheme.js`, đóng gói lại `app.asar`, rồi copy `kanagawa-theme/` sang `resources\kanagawa-theme\` và ghi `resources\active-theme.json`.
 - `patch/pixelTheme.js`: Injector chạy trong `app.asar`, nạp CSS của theme active và `loading.html` khi Antigravity khởi động.
 - `kanagawa-theme/kanagawa.config.json`: Nguồn cấu hình trung tâm (preset, bảng màu `dark`/`light`, `wallpaper`, `wallpaperPosition`, `userAvatar`, `agentAvatar`, chữ `loading`).
 - `kanagawa-theme/kanagawa.css`: Stylesheet hoàn chỉnh của theme (chứa 2 block tự động sinh ở cuối file: `KANAGAWA-CUSTOM-SURFACE` và `KANAGAWA-EMBEDDED-ASSETS`).
@@ -118,7 +118,7 @@ Khi truyền đường dẫn ảnh nằm ngoài thư mục `kanagawa-theme/`, `a
 
 ### 1. Repository Architecture
 
-- `install.ps1` / `install.bat`: Extracts `%LOCALAPPDATA%\Programs\Antigravity\resources\app.asar`, creates `app.asar.pixel-backup`, patches `dist/utils.js` & `dist/ipcHandlers.js`, injects `patch/pixelTheme.js`, repacks `app.asar`, deploys `kanagawa-theme/` to `resources\kanagawa-theme\`, and writes `resources\active-theme.json`.
+- `install.ps1` / `install.bat`: Extracts `%LOCALAPPDATA%\Programs\Antigravity\resources\app.asar`, creates `app.asar.pixel-backup`, patches `dist/utils.js` (supporting both Antigravity v44.9.1+ via `loadHubWindowUrl` and older releases via `win.loadURL`) & `dist/ipcHandlers.js`, injects `patch/pixelTheme.js`, repacks `app.asar`, deploys `kanagawa-theme/` to `resources\kanagawa-theme\`, and writes `resources\active-theme.json`.
 - `patch/pixelTheme.js`: Runtime loader inside `app.asar` that injects the active theme CSS and custom `loading.html`.
 - `kanagawa-theme/kanagawa.config.json`: Source of truth for preset, `dark`/`light` palettes, `wallpaper`, `wallpaperPosition`, `userAvatar`, `agentAvatar`, and `loading` text.
 - `kanagawa-theme/kanagawa.css`: Main theme stylesheet (ends with two script-managed blocks: `KANAGAWA-CUSTOM-SURFACE` and `KANAGAWA-EMBEDDED-ASSETS`).

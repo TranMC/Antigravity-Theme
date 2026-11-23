@@ -248,6 +248,8 @@
     }
   };
 
+  const DEFAULT_FONT_STACK = '"Inter", "Google Sans", "Google Sans Text", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+
   function hexToRgb(hex) {
     const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || "").trim());
     if (!m) return "20, 24, 32";
@@ -283,28 +285,14 @@
 
   function applyRuntimeTheme() {
     try {
-      const presetKey = localStorage.getItem('agy_selected_preset') || 'kanagawa-wave';
-      const preset = PRESETS[presetKey] || PRESETS['kanagawa-wave'];
+      const presetKey = localStorage.getItem('agy_selected_preset');
+      const preset = (presetKey && PRESETS[presetKey]) ? PRESETS[presetKey] : null;
       const savedWp = localStorage.getItem('agy_custom_wallpaper');
       const dim = localStorage.getItem('agy_wallpaper_dim') || '35';
       const blur = localStorage.getItem('agy_glass_blur') || '24';
-      const sidebarAlpha = (parseInt(localStorage.getItem('agy_sidebar_alpha') || '44') / 100).toFixed(2);
+      const rawAlpha = localStorage.getItem('agy_sidebar_alpha');
+      const sidebarAlpha = (parseInt(rawAlpha || '44') / 100).toFixed(2);
       const font = localStorage.getItem('agy_font_family') || '';
-
-      const d = preset.dark;
-      const l = preset.light;
-      const dSurf = hexToRgb(d.surfaceBase);
-      const dSide = hexToRgb(d.sidebarBase);
-      const dOver = hexToRgb(d.overlayBase);
-      const dScrim = hexToRgb(d.scrimBase);
-      const dBlue = hexToRgb(d.accentBlue);
-      const dAqua = hexToRgb(d.accentAqua);
-      const dSel = hexToRgb(d.selection);
-
-      const lSurf = hexToRgb(l.surfaceBase);
-      const lSide = hexToRgb(l.sidebarBase);
-      const lOver = hexToRgb(l.overlayBase);
-      const lPri = hexToRgb(l.primary);
 
       let style = document.getElementById('agy-runtime-theme-style');
       if (!style) {
@@ -316,8 +304,27 @@
       let css = `
 :root {
   --agy-glass-blur: ${blur}px !important;
-  --agy-sidebar-alpha: ${sidebarAlpha} !important;
+  ${rawAlpha ? `--agy-sidebar-alpha: ${sidebarAlpha} !important;` : ''}
 }
+`;
+
+      if (preset) {
+        const d = preset.dark;
+        const l = preset.light;
+        const dSurf = hexToRgb(d.surfaceBase);
+        const dSide = hexToRgb(d.sidebarBase);
+        const dOver = hexToRgb(d.overlayBase);
+        const dScrim = hexToRgb(d.scrimBase);
+        const dBlue = hexToRgb(d.accentBlue);
+        const dAqua = hexToRgb(d.accentAqua);
+        const dSel = hexToRgb(d.selection);
+
+        const lSurf = hexToRgb(l.surfaceBase);
+        const lSide = hexToRgb(l.sidebarBase);
+        const lOver = hexToRgb(l.overlayBase);
+        const lPri = hexToRgb(l.primary);
+
+        css += `
 html { background-color: ${d.chromeBg} !important; }
 
 body:not(.theme-light),
@@ -376,6 +383,30 @@ body.theme-light [role="listbox"] {
 }
 `;
 
+        if (!savedWp) {
+          css += `
+body:not(.theme-light)::before {
+  background-color: ${d.chromeBg} !important;
+  background-image:
+    radial-gradient(48% 46% at 86% 18%, rgba(${dScrim}, 0.14) 0%, rgba(${dScrim}, 0.54) 100%),
+    linear-gradient(108deg, rgba(${dScrim}, 0.56) 0%, rgba(${dScrim}, 0.40) 56%, rgba(${dScrim}, 0.22) 100%) !important;
+}
+body.theme-light::before {
+  background-color: ${l.chromeBg} !important;
+}
+`;
+        }
+
+        if (preset.agentAvatar) {
+          const starUrl = buildGeminiStarSvgUrl(preset.agentAvatar.bgStops, preset.agentAvatar.iconStops);
+          css += `
+[data-testid="agent-response"] div[class~="px-2"][class~="py-1"]:has(> [data-markdown-root])::before {
+  background-image: ${starUrl} !important;
+}
+`;
+        }
+      }
+
       if (savedWp) {
         css += `
 html::before {
@@ -392,33 +423,27 @@ body.theme-light::before {
   background-image: none !important;
 }
 `;
+      }
+
+      if (font && font.trim() && !/^(DEFAULT|NONE|off|false)$/i.test(font.trim())) {
+        const cleanFont = font.trim().replace(/^["']|["']$/g, '');
+        css += `
+:root {
+  --font-family: "${cleanFont}", ${DEFAULT_FONT_STACK} !important;
+  --agy-font-family: "${cleanFont}", ${DEFAULT_FONT_STACK} !important;
+}
+body, input, textarea, select, button, [data-markdown-root] {
+  font-family: "${cleanFont}", ${DEFAULT_FONT_STACK} !important;
+}
+`;
       } else {
         css += `
-body:not(.theme-light)::before {
-  background-color: ${d.chromeBg} !important;
-  background-image:
-    radial-gradient(48% 46% at 86% 18%, rgba(${dScrim}, 0.14) 0%, rgba(${dScrim}, 0.54) 100%),
-    linear-gradient(108deg, rgba(${dScrim}, 0.56) 0%, rgba(${dScrim}, 0.40) 56%, rgba(${dScrim}, 0.22) 100%) !important;
+:root {
+  --font-family: ${DEFAULT_FONT_STACK} !important;
+  --agy-font-family: ${DEFAULT_FONT_STACK} !important;
 }
-body.theme-light::before {
-  background-color: ${l.chromeBg} !important;
-}
-`;
-      }
-
-      if (preset.agentAvatar) {
-        const starUrl = buildGeminiStarSvgUrl(preset.agentAvatar.bgStops, preset.agentAvatar.iconStops);
-        css += `
-[data-testid="agent-response"] div[class~="px-2"][class~="py-1"]:has(> [data-markdown-root])::before {
-  background-image: ${starUrl} !important;
-}
-`;
-      }
-
-      if (font && font.trim() && font !== 'DEFAULT') {
-        css += `
-body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
-  font-family: ${font} !important;
+body, input, textarea, select, button, [data-markdown-root] {
+  font-family: ${DEFAULT_FONT_STACK} !important;
 }
 `;
       }
@@ -463,6 +488,7 @@ body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
       "Give Feedback": "Gửi phản hồi",
       "Show All": "Hiện tất cả",
       "Not in Project": "Ngoài dự án",
+      "No conversations yet": "Chưa có cuộc trò chuyện",
       "General": "Cài đặt chung",
       "Application": "Ứng dụng",
       "Appearance": "Giao diện",
@@ -482,23 +508,44 @@ body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
       "Send Immediately": "Gửi ngay",
       "Queue": "Xếp hàng",
       "Open IDE": "Mở IDE",
-      "Review": "Xem lại"
+      "Review": "Xem lại",
+      "Working": "Đang xử lý",
+      "Working...": "Đang xử lý...",
+      "Thinking": "Đang suy nghĩ",
+      "Thinking...": "Đang suy nghĩ..."
     };
 
     function translateStaticUI() {
       if (localStorage.getItem('agy_vietnamese_enabled') === 'false') return;
 
-      const input = document.querySelector('textarea[data-testid="composer-input"]');
-      if (input && input.placeholder && input.placeholder.includes('Ask anything')) {
-        input.placeholder = 'Hỏi bất kỳ điều gì, @ để gắn thẻ, / cho hành động';
-      }
+      document.querySelectorAll('textarea[placeholder], input[placeholder]').forEach(input => {
+        if (input.placeholder && input.placeholder.includes('Ask anything')) {
+          input.placeholder = 'Hỏi bất kỳ điều gì, @ để gắn thẻ, / cho hành động';
+        }
+      });
 
-      const elements = document.querySelectorAll('[data-testid="conversation-list-sidebar"] span, [data-testid="conversation-list-sidebar"] div, div[role="navigation"] span, [role="dialog"] span, [role="dialog"] div');
+      document.querySelectorAll('[data-placeholder]').forEach(el => {
+        const dp = el.getAttribute('data-placeholder');
+        if (dp && dp.includes('Ask anything')) {
+          el.setAttribute('data-placeholder', 'Hỏi bất kỳ điều gì, @ để gắn thẻ, / cho hành động');
+        }
+      });
+
+      const elements = document.querySelectorAll(
+        '[data-testid="conversation-list-sidebar"] span, [data-testid="conversation-list-sidebar"] div, [data-testid="conversation-list-sidebar"] button, ' +
+        'div[role="navigation"] span, div[role="navigation"] div, div[role="navigation"] button, ' +
+        '[role="dialog"] span, [role="dialog"] div, [role="dialog"] button, [role="dialog"] h2, [role="dialog"] h3, ' +
+        '[data-main-content-header] span, [data-main-content-body] span'
+      );
       elements.forEach(el => {
         if (el.children.length > 0) return;
+        if (el.closest('.monaco-editor, pre, code, .xterm, [data-markdown-root]')) return;
         const txt = el.textContent ? el.textContent.trim() : '';
+        if (!txt) return;
         if (VI_DICT[txt]) {
           el.textContent = VI_DICT[txt];
+        } else if (/^Ask anything, @ to mention/i.test(txt)) {
+          el.textContent = 'Hỏi bất kỳ điều gì, @ để gắn thẻ, / cho hành động';
         } else if (/Hey .+, what should we build today\?/i.test(txt)) {
           const match = txt.match(/Hey (.+), what should we build today\?/i);
           const name = match ? match[1] : 'bạn';
@@ -519,7 +566,8 @@ body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
       if (dialog.querySelector('#agy-theme-studio-tab')) return;
 
       const buttons = Array.from(dialog.querySelectorAll('button, [role="tab"]'));
-      const sampleBtn = buttons.find(b => /General|Cài đặt chung|Application|Giao diện/i.test(b.textContent));
+      const sampleBtn = buttons.find(b => /Browser|Trình duyệt|Models|Mô hình AI|Shortcuts|Phím tắt/i.test(b.textContent))
+        || buttons.find(b => /General|Cài đặt chung|Application|Giao diện/i.test(b.textContent));
       if (!sampleBtn || !sampleBtn.parentElement) return;
 
       const tabContainer = sampleBtn.parentElement;
@@ -560,7 +608,7 @@ body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
       if (!customPanel) {
         customPanel = document.createElement('div');
         customPanel.id = 'agy-theme-studio-panel';
-        customPanel.style.cssText = 'display:none; width:100%; height:100%; flex:1; background:#121622 !important; color:#EAE6D3; padding:24px 28px; border-radius:12px; overflow-y:auto; box-sizing:border-box; font-family:sans-serif; z-index:10;';
+        customPanel.style.cssText = 'display:none; width:100%; height:100%; flex:1; background:#121622 !important; color:#EAE6D3; padding:24px 28px; border-radius:12px; overflow-y:auto; box-sizing:border-box; font-family:' + DEFAULT_FONT_STACK + '; z-index:10;';
 
         const currentPreset = localStorage.getItem('agy_selected_preset') || 'kanagawa-wave';
         const currentFont = localStorage.getItem('agy_font_family') || '';
@@ -624,7 +672,7 @@ body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
         customPanel.innerHTML = [
           '<div style="border-bottom:1px solid rgba(122,168,159,0.25); padding-bottom:16px; margin-bottom:20px;">',
           '  <h2 style="margin:0; font-size:20px; font-weight:600; color:#E6C384; display:flex; align-items:center; gap:10px;">',
-          '    <span>🎨</span> Antigravity Theme Studio <span style="font-size:11px; padding:2px 8px; background:rgba(122,168,159,0.2); border-radius:10px; color:#7AA89F;">v2.2.0</span>',
+          '    <span>🎨</span> Antigravity Theme Studio <span style="font-size:11px; padding:2px 8px; background:rgba(122,168,159,0.2); border-radius:10px; color:#7AA89F;">v2.3.0</span>',
           '  </h2>',
           '  <p style="margin:6px 0 0; font-size:13px; color:#A6A69C;">Chọn bảng màu preset, font chữ, độ mờ kính Acrylic và hình nền trực tiếp — áp dụng ngay tức thì không cần khởi động lại.</p>',
           '</div>',
@@ -635,7 +683,7 @@ body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
           '    <h3 style="margin:0; font-size:15px; font-weight:600; color:#7AA89F; display:flex; align-items:center; gap:8px;">',
           '      <span>🎨</span> Bảng Preset Màu (Click chọn đổi màu ngay)',
           '    </h3>',
-          '    <span style="font-size:12px; color:#A6A69C;">9 bảng màu phong cách lập trình</span>',
+          '    <button type="button" id="agy-preset-reset-cli-btn" style="padding:4px 10px; font-size:11px; background:rgba(122,168,159,0.15); border:1px solid rgba(122,168,159,0.35); color:#EAE6D3; border-radius:6px; cursor:pointer;">🔄 Theo cấu hình CLI</button>',
           '  </div>',
           '  <div id="agy-preset-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(210px, 1fr)); gap:12px;">',
           '    ' + presetCardsHtml,
@@ -737,6 +785,28 @@ body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
 
       // 4. Bind Events for Presets, Fonts, Sliders, Wallpaper, Pet
       const presetCards = customPanel.querySelectorAll('.agy-preset-card');
+      const presetResetCliBtn = customPanel.querySelector('#agy-preset-reset-cli-btn');
+
+      if (presetResetCliBtn) {
+        presetResetCliBtn.onclick = () => {
+          localStorage.removeItem('agy_selected_preset');
+          presetCards.forEach(c => {
+            const isDef = (c.getAttribute('data-preset-id') === 'kanagawa-wave');
+            c.style.border = isDef ? '2px solid #7AA89F' : '2px solid rgba(122,168,159,0.2)';
+            c.style.background = isDef ? 'rgba(122,168,159,0.12)' : 'rgba(20,26,38,0.6)';
+            const titleSpan = c.querySelector('span');
+            if (titleSpan) titleSpan.style.color = isDef ? '#7AA89F' : '#EAE6D3';
+            const badgeDiv = c.querySelector('.agy-card-badge');
+            if (badgeDiv) {
+              badgeDiv.innerHTML = isDef
+                ? '<span style="font-size:11px; font-weight:600; color:#7AA89F; background:rgba(122,168,159,0.2); padding:2px 6px; border-radius:6px;">✓ Theo CLI</span>'
+                : '';
+            }
+          });
+          applyRuntimeTheme();
+        };
+      }
+
       presetCards.forEach(card => {
         card.onclick = () => {
           const id = card.getAttribute('data-preset-id');
@@ -898,10 +968,12 @@ body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
 
         if (target === themeTab || themeTab.contains(target)) {
           tabContainer.querySelectorAll('button, [role="tab"]').forEach(b => {
-            b.style.background = 'transparent';
+            b.style.setProperty('background', 'transparent', 'important');
+            b.style.setProperty('background-color', 'transparent', 'important');
             b.style.fontWeight = 'normal';
           });
-          themeTab.style.background = 'rgba(122,168,159,0.2)';
+          themeTab.style.setProperty('background', 'rgba(122,168,159,0.22)', 'important');
+          themeTab.style.setProperty('background-color', 'rgba(122,168,159,0.22)', 'important');
           themeTab.style.fontWeight = '600';
 
           // Ẩn tất cả các phần tử con hiện có trong CỘT BÊN PHẢI
@@ -920,7 +992,14 @@ body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
           customPanel.style.display = 'block';
 
         } else if (tabContainer.contains(target)) {
-          themeTab.style.background = 'transparent';
+          tabContainer.querySelectorAll('button, [role="tab"]').forEach(b => {
+            if (b !== themeTab) {
+              b.style.removeProperty('background');
+              b.style.removeProperty('background-color');
+            }
+          });
+          themeTab.style.setProperty('background', 'transparent', 'important');
+          themeTab.style.setProperty('background-color', 'transparent', 'important');
           themeTab.style.fontWeight = 'normal';
           customPanel.style.display = 'none';
 

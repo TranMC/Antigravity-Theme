@@ -535,11 +535,28 @@ function replaceCssVar(css, varName, value) {
   return css.replace(re, (_, prefix, _old, suffix) => `${prefix}${value}${suffix}`);
 }
 
+const DEFAULT_FONT_STACK = '"Inter", "Google Sans", "Google Sans Text", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+
+function formatFontStack(rawFont) {
+  const clean = String(rawFont || "").trim();
+  if (!clean || /^(DEFAULT|NONE|off|false)$/i.test(clean)) {
+    return DEFAULT_FONT_STACK;
+  }
+  const primary = clean.includes(",") || clean.includes('"') || clean.includes("'")
+    ? clean
+    : `"${clean}"`;
+  return `${primary}, ${DEFAULT_FONT_STACK}`;
+}
+
 function buildSurfaceOverrideBlock(cfg) {
   const def = PRESETS["kanagawa-wave"];
   const d = cfg.dark;
   const l = cfg.light;
-  const hasCustomFont = Boolean(cfg.fontFamily && cfg.fontFamily.trim());
+  const hasCustomFont = Boolean(
+    cfg.fontFamily &&
+    cfg.fontFamily.trim() &&
+    !/^(DEFAULT|NONE|off|false)$/i.test(cfg.fontFamily.trim())
+  );
   const hasCustomOpacity = cfg.uiOpacity !== undefined && cfg.uiOpacity !== null;
   const changed =
     JSON.stringify(d) !== JSON.stringify(def.dark) ||
@@ -565,14 +582,14 @@ function buildSurfaceOverrideBlock(cfg) {
 
   let fontCss = "";
   if (hasCustomFont) {
-    const font = cfg.fontFamily.trim();
+    const fontStack = formatFontStack(cfg.fontFamily);
     fontCss = `
 :root {
-  --font-family: ${font} !important;
-  --agy-font-family: ${font} !important;
+  --font-family: ${fontStack} !important;
+  --agy-font-family: ${fontStack} !important;
 }
-body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
-  font-family: ${font} !important;
+body, input, textarea, select, button, [data-markdown-root] {
+  font-family: ${fontStack} !important;
 }
 `;
   }
@@ -1054,6 +1071,8 @@ if (require.main === module) {
 module.exports = {
   PRESETS,
   PROFILES_DIR,
+  DEFAULT_FONT_STACK,
+  formatFontStack,
   parseArgs,
   sanitizeProfileName,
   buildSurfaceOverrideBlock,

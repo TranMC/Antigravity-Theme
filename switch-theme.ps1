@@ -45,6 +45,7 @@ http.get('http://127.0.0.1:$Port/json', (res) => {
   res.on('end', () => {
     try {
       const list = JSON.parse(data);
+      if (typeof WebSocket === 'undefined') { process.exit(1); }
       const pages = list.filter(x => x.type === 'page' && x.url && /^https?:/i.test(x.url) && x.webSocketDebuggerUrl);
       if (pages.length > 0) {
         let left = pages.length;

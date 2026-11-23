@@ -16,34 +16,34 @@
   --kw-sumiInk2: #2A2A37;
   --kw-sumiInk3: #363646;
   --kw-sumiInk4: #54546D;
-  --kw-fujiWhite: #ECEFF4;
-  --kw-oldWhite: #D8DEE9;
-  --kw-fujiGray: #4C566A;
+  --kw-fujiWhite: #EAE6D3;
+  --kw-oldWhite: #CFC8A3;
+  --kw-fujiGray: #8A8980;
   --kw-waveBlue1: #223249;
-  --kw-waveBlue2: #434C5E;
-  --kw-crystalBlue: #81A1C1;
-  --kw-carpYellow: #88C0D0;
-  --kw-waveAqua: #8FBCBB;
-  --kw-springGreen: #A3BE8C;
-  --kw-sakuraPink: #BF616A;
-  --kw-oniViolet: #B48EAD;
-  --kw-surimiOrange: #D08770;
+  --kw-waveBlue2: #2D4F67;
+  --kw-crystalBlue: #7E9CD8;
+  --kw-carpYellow: #E6C384;
+  --kw-waveAqua: #7AA89F;
+  --kw-springGreen: #98BB6C;
+  --kw-sakuraPink: #D27E99;
+  --kw-oniViolet: #957FB8;
+  --kw-surimiOrange: #FFA066;
 
   /* Kanagawa Lotus (Light) */
-  --kl-white0: #C2D0DC;
-  --kl-white1: #D8DEE9;
-  --kl-white2: #E5E9F0;
-  --kl-white3: #ECEFF4;
-  --kl-ink1: #2E3440;
-  --kl-ink2: #5E81AC;
-  --kl-gray2: #4C566A;
+  --kl-white0: #D5CEA3;
+  --kl-white1: #DCD5AC;
+  --kl-white2: #E5DDB0;
+  --kl-white3: #F2ECBC;
+  --kl-ink1: #3E3E4C;
+  --kl-ink2: #43436C;
+  --kl-gray2: #625F53;
 
   /* Native Windows caption buttons — zero duplicate buttons */
   --px-native-caption: on;
-  --px-chrome-dark-bg: #242933;
-  --px-chrome-dark-fg: #ECEFF4;
-  --px-chrome-light-bg: #D8DEE9;
-  --px-chrome-light-fg: #2E3440;
+  --px-chrome-dark-bg: #131720;
+  --px-chrome-dark-fg: #EAE6D3;
+  --px-chrome-light-bg: #E5DDB0;
+  --px-chrome-light-fg: #3E3E4C;
   --px-cursor: off;
   --px-glass: off;
 }
@@ -227,6 +227,7 @@ html {
 body {
   background: transparent !important;
   color: var(--kw-fujiWhite) !important;
+  font-family: "Inter", "Google Sans", "Google Sans Text", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body.theme-light {
@@ -459,18 +460,6 @@ body:not([data-has-browser-hole="true"]) div.absolute.right-0.z-50:has([data-tes
   right: 6px !important;
 }
 
-/* Điểm 4: Subtle vertical depth gradient on sidebar canvas (inset rounded frame, no hard vertical bar) */
-body:not(.theme-light) :is([data-testid="conversation-list-sidebar"], [data-testid="settings-sidebar"], div[role="navigation"][aria-label="Sidebar"]):not([role="navigation"] [data-testid="conversation-list-sidebar"]) {
-  background-color: rgba(14, 18, 26, var(--agy-sidebar-alpha, 0.40)) !important;
-  backdrop-filter: blur(var(--agy-glass-blur, 24px)) saturate(140%) !important;
-  -webkit-backdrop-filter: blur(var(--agy-glass-blur, 24px)) saturate(140%) !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 14px !important;
-  margin: 6px 0 6px 6px !important;
-  width: calc(100% - 6px) !important;
-  height: calc(100% - 12px) !important;
-  overflow: hidden !important;
-}
 
 body:not(.theme-light) pre > code:only-child {
   display: block;
@@ -729,13 +718,22 @@ form:has(textarea) {
   border-radius: 14px !important;
 }
 
-[data-testid="agent-response"] {
+[data-testid="agent-response"]:has([data-markdown-root]:not(:empty)) {
   background: rgba(15, 20, 29, 0.40) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
   border: 1px solid rgba(122, 168, 159, 0.2) !important;
   border-radius: 14px !important;
   padding: 12px 16px !important;
+}
+
+[data-testid="agent-response"]:not(:has([data-markdown-root]:not(:empty))) {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
 }
 
 /* 3. Solid Settings Dialog (chống đè chữ & trong suốt) */
@@ -757,87 +755,6 @@ div[data-testid="settings-modal"],
   background: #181d2a !important;
 }
 /* === ANTIGRAVITY-ACRYLIC-ENHANCEMENT-END === */
-
-/* === KANAGAWA-CUSTOM-SURFACE-START === */
-html { background-color: #242933 !important; }
-
-:root {
-  --font-family: Fira Code !important;
-  --agy-font-family: Fira Code !important;
-}
-body, input, textarea, select, button, [data-markdown-root], .monaco-workbench {
-  font-family: Fira Code !important;
-}
-
-:root {
-  --ui-opacity: 0.80 !important;
-  --agy-sidebar-alpha: 0.80 !important;
-}
-
-body:not(.theme-light),
-body[data-agy-theme]:not(.theme-light),
-body[data-agy-theme]:not(.theme-light) .agy-inset-shell {
-  --sidebar: rgba(36, 41, 51, 0.64) !important;
-  --sidebar-secondary: rgba(67, 76, 94, 0.72) !important;
-  --card: rgba(46, 52, 64, 0.68) !important;
-  --card-border: rgba(129, 161, 193, 0.16) !important;
-  --card-edge: rgba(143, 188, 187, 0.14) !important;
-  --border: rgba(129, 161, 193, 0.12) !important;
-  --glass: rgba(46, 52, 64, 0.80) !important;
-  --glass-border: rgba(143, 188, 187, 0.28) !important;
-  --onyx-frame: rgba(59, 66, 82, 0.84) !important;
-  --onyx-well: rgba(67, 76, 94, 0.45) !important;
-  --onyx-raised: rgba(46, 52, 64, 0.90) !important;
-  --onyx-selected: rgba(67, 76, 94, 0.82) !important;
-}
-body:not(.theme-light)::before {
-  background-image:
-    radial-gradient(48% 46% at 86% 18%, rgba(31, 35, 42, 0.14) 0%, rgba(31, 35, 42, 0.54) 100%),
-    linear-gradient(108deg, rgba(31, 35, 42, 0.56) 0%, rgba(31, 35, 42, 0.40) 56%, rgba(31, 35, 42, 0.22) 100%) !important;
-}
-body:not(.theme-light):not([data-has-browser-hole="true"]) .browser-hole-ancestor[data-side-panel-focus-scope="true"]:not([data-has-browser-hole="true"]),
-body:not(.theme-light) [data-main-content-body],
-body:not(.theme-light) [role="navigation"][aria-label="Sidebar"],
-body:not(.theme-light) [data-testid="conversation-list-sidebar"] {
-  background-color: rgba(36, 41, 51, 0.80) !important;
-  border-color: rgba(143, 188, 187, 0.18) !important;
-}
-body:not(.theme-light) .agy-overlay,
-body:not(.theme-light) .surface-glass,
-body:not(.theme-light) [role="dialog"],
-body:not(.theme-light) [role="menu"],
-body:not(.theme-light) [role="listbox"] {
-  background-color: rgba(59, 66, 82, 0.96) !important;
-  border-color: rgba(129, 161, 193, 0.18) !important;
-}
-
-body.theme-light,
-body.theme-light[data-agy-theme],
-body.theme-light[data-agy-theme] .agy-inset-shell {
-  --sidebar: rgba(229, 233, 240, 0.74) !important;
-  --card: rgba(242, 244, 248, 0.78) !important;
-  --card-border: rgba(94, 129, 172, 0.14) !important;
-  --card-edge: rgba(94, 129, 172, 0.12) !important;
-  --border: rgba(94, 129, 172, 0.11) !important;
-  --glass: rgba(242, 244, 248, 0.86) !important;
-  --glass-border: rgba(94, 129, 172, 0.20) !important;
-  --onyx-frame: rgba(236, 239, 244, 0.88) !important;
-  --onyx-raised: rgba(242, 244, 248, 0.92) !important;
-}
-body.theme-light::before {
-  background-image:
-    radial-gradient(52% 48% at 86% 18%, rgba(216, 222, 233, 0.36) 0%, rgba(216, 222, 233, 0.72) 100%),
-    linear-gradient(180deg, rgba(216, 222, 233, 0.56) 0%, rgba(216, 222, 233, 0.72) 100%) !important;
-}
-body.theme-light .agy-overlay,
-body.theme-light .surface-glass,
-body.theme-light [role="dialog"],
-body.theme-light [role="menu"],
-body.theme-light [role="listbox"] {
-  background-color: rgba(236, 239, 244, 0.97) !important;
-  border-color: rgba(94, 129, 172, 0.24) !important;
-}
-/* === KANAGAWA-CUSTOM-SURFACE-END === */
 
 /* === KANAGAWA-EMBEDDED-ASSETS-START === */
 

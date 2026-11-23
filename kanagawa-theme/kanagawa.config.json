@@ -1,59 +1,57 @@
 {
-  "preset": "nord",
+  "preset": "kanagawa-wave",
   "wallpaper": "KEEP_EMBEDDED",
   "wallpaperPosition": "right top",
   "userAvatar": "KEEP_EMBEDDED",
   "agentAvatar": {
     "image": "KEEP_EMBEDDED",
     "bgStops": [
-      "#ECEFF4",
-      "#E5E9F0",
-      "#D8DEE9"
+      "#FAF7E6",
+      "#F6ECC9",
+      "#EBE3CC"
     ],
     "iconStops": [
-      "#88C0D0",
-      "#81A1C1",
-      "#5E81AC"
+      "#1F6E97",
+      "#285C84",
+      "#0E3252"
     ]
   },
   "dark": {
-    "chromeBg": "#242933",
-    "chromeFg": "#ECEFF4",
-    "primary": "#88C0D0",
-    "accentBlue": "#81A1C1",
-    "accentAqua": "#8FBCBB",
-    "accentGreen": "#A3BE8C",
-    "accentPink": "#BF616A",
-    "accentViolet": "#B48EAD",
-    "accentOrange": "#D08770",
-    "text": "#ECEFF4",
-    "textMuted": "#D8DEE9",
-    "textSubtle": "#4C566A",
-    "surfaceBase": "#2E3440",
-    "sidebarBase": "#242933",
-    "overlayBase": "#3B4252",
-    "scrimBase": "#1F232A",
-    "selection": "#434C5E"
+    "chromeBg": "#131720",
+    "chromeFg": "#EAE6D3",
+    "primary": "#E6C384",
+    "accentBlue": "#7E9CD8",
+    "accentAqua": "#7AA89F",
+    "accentGreen": "#98BB6C",
+    "accentPink": "#D27E99",
+    "accentViolet": "#957FB8",
+    "accentOrange": "#FFA066",
+    "text": "#EAE6D3",
+    "textMuted": "#CFC8A3",
+    "textSubtle": "#8A8980",
+    "surfaceBase": "#11161F",
+    "sidebarBase": "#0E121A",
+    "overlayBase": "#0F141D",
+    "scrimBase": "#0B0F17",
+    "selection": "#2D4F67"
   },
   "light": {
-    "chromeBg": "#D8DEE9",
-    "chromeFg": "#2E3440",
-    "primary": "#5E81AC",
-    "text": "#2E3440",
-    "textMuted": "#4C566A",
-    "paper0": "#C2D0DC",
-    "paper1": "#D8DEE9",
-    "paper2": "#E5E9F0",
-    "paper3": "#ECEFF4",
-    "surfaceBase": "#F2F4F8",
-    "sidebarBase": "#E5E9F0",
-    "overlayBase": "#ECEFF4",
-    "scrimBase": "#D8DEE9"
+    "chromeBg": "#E5DDB0",
+    "chromeFg": "#3E3E4C",
+    "primary": "#43436C",
+    "text": "#3E3E4C",
+    "textMuted": "#625F53",
+    "paper0": "#D5CEA3",
+    "paper1": "#DCD5AC",
+    "paper2": "#E5DDB0",
+    "paper3": "#F2ECBC",
+    "surfaceBase": "#F7F3D6",
+    "sidebarBase": "#EBE5C2",
+    "overlayBase": "#F2ECBC",
+    "scrimBase": "#F2ECBC"
   },
   "loading": {
     "title": "Antigravity",
     "subtitle": "Ready for Kanagawa Wave..."
-  },
-  "fontFamily": "Fira Code",
-  "uiOpacity": 0.8
+  }
 }

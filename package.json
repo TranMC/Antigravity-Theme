@@ -1,6 +1,6 @@
 {
   "name": "antigravity-kanagawa-theme",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Customizable Kanagawa Wave & Lotus theme for Google Antigravity 2.x",
   "scripts": {
     "apply": "node scripts/apply_kanagawa_config.js",

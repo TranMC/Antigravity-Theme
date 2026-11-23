@@ -3353,7 +3353,7 @@ const ANTIGRAVITY_STUDIO_V21_JS = `(() => {
         customPanel.innerHTML = [
           '<div style="border-bottom:1px solid rgba(122,168,159,0.25); padding-bottom:16px; margin-bottom:22px;">',
           '  <h2 style="margin:0; font-size:20px; font-weight:600; color:#E6C384; display:flex; align-items:center; gap:10px;">',
-          '    <span>🎨</span> Antigravity Theme Studio <span style="font-size:11px; padding:2px 8px; background:rgba(122,168,159,0.2); border-radius:10px; color:#7AA89F;">v2.1.0</span>',
+          '    <span>🎨</span> Antigravity Theme Studio <span style="font-size:11px; padding:2px 8px; background:rgba(122,168,159,0.2); border-radius:10px; color:#7AA89F;">v2.3.0</span>',
           '  </h2>',
           '  <p style="margin:6px 0 0; font-size:13px; color:#A6A69C;">Tùy chỉnh hình nền, hiệu ứng kính mờ Acrylic Glassmorphism, giao diện và thú cưng Cyber-Cat.</p>',
           '</div>',
@@ -3731,7 +3731,7 @@ function attachPixelTheme(win) {
             }
             // Screen Pet (Cyber-Cat)
             wc.executeJavaScript(CYBER_CAT_PET_JS, true).catch(() => {});
-            // Safe Unified Theme & UI Enhancer (v2.2.0 - In-App Theme Studio)
+            // Safe Unified Theme & UI Enhancer (v2.3.0 - In-App Theme Studio)
             try {
                 const themeDir = getThemeDir();
                 const studioFile = path.join(themeDir, "studio.js");
